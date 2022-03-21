@@ -1,4 +1,5 @@
 const express = require("express");
+const nunjucks = require("nunjucks");
 const uuidAPIKey = require("uuid-apikey");
 const app = express();
 
@@ -7,13 +8,16 @@ const key = {
   uuid: "b97d7054-d8c0-4a05-8fd5-41f5d23e509c",
 };
 
-const server = app.listen(3001, () => {
-  console.log("start server - localhost:3001");
+nunjucks.configure("views", {
+  express: app,
+  watch: true,
 });
+app.set("view engine", "html");
 
 app.get("/", (req, res) => {
-  res.send("데이터 위치 - 'http://localhost:3001/{apiKey}'");
+  res.render("index");
 });
+
 app.get("/:apiKey", async (req, res) => {
   const { apiKey } = req.params;
   if (!uuidAPIKey.isAPIKey(apiKey) || !uuidAPIKey.check(apiKey, key.uuid)) {
@@ -27,4 +31,8 @@ app.get("/:apiKey", async (req, res) => {
     ];
     res.send(data);
   }
+});
+
+app.listen(3001, () => {
+  console.log("start server - localhost:3001");
 });
