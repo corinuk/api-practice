@@ -1,6 +1,7 @@
 const express = require("express");
 const uuidAPIKey = require("uuid-apikey");
-const path = require("path");
+const nunjucks = require("nunjucks");
+
 const app = express();
 
 const key = {
@@ -8,7 +9,15 @@ const key = {
   uuid: "b97d7054-d8c0-4a05-8fd5-41f5d23e509c",
 };
 
-app.use(express.static(path.join(__dirname, "react-api/build")));
+nunjucks.configure("views", {
+  express: app,
+  watch: true,
+});
+app.set("view engine", "html");
+
+app.get("/", (req, res) => {
+  res.render("index");
+});
 
 app.get("/:apiKey", async (req, res) => {
   const { apiKey } = req.params;
@@ -23,10 +32,6 @@ app.get("/:apiKey", async (req, res) => {
     ];
     res.send(data);
   }
-});
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "react-api/build/index.html"));
 });
 
 app.listen(3001, () => {

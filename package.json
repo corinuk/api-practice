@@ -1,5 +1,4 @@
 {
-  "homepage": "https://stupefied-yalow-26def6.netlify.app",
   "name": "api-server",
   "version": "1.0.0",
   "description": "",
@@ -13,7 +12,7 @@
   "dependencies": {
     "chokidar": "^3.5.3",
     "express": "^4.17.3",
-    "path": "^0.12.7",
+    "nunjucks": "^3.2.3",
     "uuid-apikey": "^1.5.3"
   }
 }
